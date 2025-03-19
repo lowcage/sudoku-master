@@ -1,1 +1,16 @@
-<p>playground works!</p>
+<div class="sudoku-container" tabindex="0" (keydown)="handleKeydown($event)">
+  <table class="sudoku-board">
+    <tbody>
+    <tr *ngFor="let row of board; let rowIndex = index">
+      <td
+        *ngFor="let cell of row; let colIndex = index"
+        (click)="selectCell(rowIndex, colIndex)"
+        [class.selected]="selectedRow === rowIndex && selectedCol === colIndex"
+        [class.invalid]="isNumberInvalid(rowIndex, colIndex, board[rowIndex][colIndex]) && selectedRow === rowIndex && selectedCol === colIndex"
+        [class.conflict]="isNumberInvalid(rowIndex, colIndex, board[rowIndex][colIndex]) && !(selectedRow === rowIndex && selectedCol === colIndex)">
+        {{ board[rowIndex][colIndex] }}
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>

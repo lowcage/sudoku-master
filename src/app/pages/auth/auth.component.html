@@ -1,10 +1,15 @@
+<div class="auth-icon">
+  <div class="logo-container">
+    <img ngSrc="/logo-black.png" alt="Logo" height="256" width="256" priority>
+  </div>
+</div>
 <mat-card class="auth-card">
   <h2 *ngIf="!isLoginMode">Register</h2>
   <h2 *ngIf="isLoginMode">Login</h2>
 
   <form (submit)="onSubmit()">
     <mat-form-field appearance="outline">
-      <mat-label>Email</mat-label>
+      <mat-label>E-mail</mat-label>
       <input matInput type="email" name="email" [(ngModel)]="email" required />
     </mat-form-field>
 
@@ -13,12 +18,16 @@
       <input matInput type="password" name="password" [(ngModel)]="password" required />
     </mat-form-field>
 
-    <button mat-raised-button color="primary" type="submit">
+    <button mat-raised-button color="primary" type="submit" style="width: 100%">
       {{ isLoginMode ? 'Login' : 'Register' }}
     </button>
   </form>
 
-  <button mat-stroked-button color="accent" (click)="toggleMode()">
-    {{ isLoginMode ? 'Need an account? Register' : 'Already have an account? Login' }}
+  <button mat-flat-button color="primary" (click)="toggleMode()">
+    {{ isLoginMode ? 'Need an account? Register now!' : 'Already have an account?' }}
+  </button>
+
+  <button mat-stroked-button disabled disabledInteractive matTooltip="To be implemented!">
+     Login via Google <mat-icon aria-hidden="false" fontIcon="login"></mat-icon>
   </button>
 </mat-card>

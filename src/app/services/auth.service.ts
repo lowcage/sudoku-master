@@ -12,15 +12,22 @@ export class AuthService {
 
   login(email: string, password: string) {
     console.log(`User logged in: ${email}`);
+    sessionStorage.setItem('userEmail', email); // Email mentése sessionStorage-be
+    sessionStorage.setItem('gamesPlayed', '0'); // Alapértékek
+    sessionStorage.setItem('gamesWon', '0');
     this.isAuthenticated.next(true);
   }
 
   register(email: string, password: string) {
     console.log(`User registered: ${email}`);
+    sessionStorage.setItem('userEmail', email);
+    sessionStorage.setItem('gamesPlayed', '0');
+    sessionStorage.setItem('gamesWon', '0');
     this.isAuthenticated.next(true);
   }
 
   logout() {
+    sessionStorage.clear(); // Kilépéskor töröljük az adatokat
     this.isAuthenticated.next(false);
   }
 
