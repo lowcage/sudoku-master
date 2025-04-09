@@ -1,4 +1,14 @@
-<div class="sudoku-container" tabindex="0" (keydown)="handleKeydown($event)">
+<div *ngIf="!showBoard" class="difficulty-buttons">
+  <button mat-raised-button color="primary" (click)="loadEasyBoard()">Easy</button>
+  <button mat-raised-button color="accent" disabled>Medium</button>
+  <button mat-raised-button color="warn" disabled>Hard</button>
+</div>
+<div *ngIf="hasSavedGame && !showBoard" class="load-game-button">
+  <button mat-stroked-button color="primary" (click)="loadLastGame()">
+    Load Last Game
+  </button>
+</div>
+<div *ngIf="showBoard" class="sudoku-container" tabindex="0" (keydown)="handleKeydown($event)">
   <table class="sudoku-board">
     <tbody>
     <tr *ngFor="let row of board; let rowIndex = index">
@@ -14,3 +24,4 @@
     </tbody>
   </table>
 </div>
+

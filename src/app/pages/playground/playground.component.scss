@@ -51,3 +51,21 @@
 .sudoku-board td.conflict {
   background-color: orange;
 }
+
+.difficulty-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  height: 80vh;
+  flex-direction: row;
+}
+
+.load-game-button {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+
+

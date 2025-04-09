@@ -1,10 +1,13 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import {MatButton} from '@angular/material/button';
+import {GameStorageService, SavedGame} from '../../services/game-storage.service';
+
 
 @Component({
   selector: 'app-playground',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, MatButton],
   templateUrl: './playground.component.html',
   styleUrl: './playground.component.scss'
 })
@@ -12,6 +15,58 @@ export class PlaygroundComponent {
   board: string[][] = Array.from({ length: 9 }, () => Array(9).fill(''));
   selectedRow: number | null = null;
   selectedCol: number | null = null;
+  showBoard = false;
+  hasSavedGame = false;
+
+
+  constructor(private gameStorage: GameStorageService) {
+    // Check if a saved game exists
+    this.gameStorage.getLastGame().subscribe(games => {
+      this.hasSavedGame = games.length > 0;
+    });
+  }
+
+
+  easyBoard: string[][] = [
+    ['5', '3', '',  '', '7', '',  '', '', ''],
+    ['6', '', '',  '1', '9', '5', '', '', ''],
+    ['', '9', '8', '', '', '',  '', '6', ''],
+    ['8', '', '',  '', '6', '',  '', '', '3'],
+    ['4', '', '',  '8', '', '3', '', '', '1'],
+    ['7', '', '',  '', '2', '',  '', '', '6'],
+    ['', '6', '',  '', '', '',  '2', '8', ''],
+    ['', '', '',  '4', '1', '9', '', '', '5'],
+    ['', '', '',  '', '8', '',  '', '7', '9']
+  ];
+
+  loadEasyBoard() {
+    this.board = this.easyBoard.map(row => [...row]);
+    this.selectedRow = null;
+    this.selectedCol = null;
+    this.showBoard = true;
+
+    // Elmentjük az indított játékot
+    this.gameStorage.saveGame(this.board).subscribe({
+      next: () => console.log('Game saved to IndexedDB'),
+      error: (err) => console.error('Failed to save game:', err)
+    });
+  }
+
+  loadLastGame() {
+    this.gameStorage.getLastGame().subscribe((games: SavedGame[]) => {
+      const lastGame = games[games.length - 1];
+      if (lastGame && lastGame.board) {
+        this.board = lastGame.board;
+        this.selectedRow = null;
+        this.selectedCol = null;
+        this.showBoard = true;
+      }
+    });
+
+  }
+
+
+
 
   selectCell(row: number, col: number) {
     this.selectedRow = row;
@@ -62,6 +117,7 @@ export class PlaygroundComponent {
       }
     }
 
+    this.gameStorage.overwriteGame(this.board);
     event.preventDefault(); // Megakadályozza az alapértelmezett görgetést
   }
 
